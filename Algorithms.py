@@ -18,7 +18,7 @@ def iterative_bfs(graph):
         init=False
     return visited
 
-def isAcceptingBFS(graph):
+def iterative_bfs(graph):
     visited = []
     queue = deque()
     init=True
