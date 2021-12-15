@@ -1,5 +1,7 @@
 from collections import deque
 
+from Kernel import STRTR, IsAcceptingProxy
+
 
 def iterative_bfs(graph):
     visited = []
@@ -36,3 +38,9 @@ def iterative_bfs(graph):
                 visited.append(n)
         init=False
     return True
+
+
+def predicate_model_checker(semantic, predicate):
+    tr = STRTR(semantic)
+    tr = IsAcceptingProxy(tr, predicate)
+    return iterative_bfs(tr)
