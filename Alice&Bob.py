@@ -11,10 +11,10 @@ class AliceBobConfiguration:
         self.Flag_bob = 0
 
     def __hash__(self):
-        return hash(self.PC_alice + self.PC_bob)+(self.Flag_alice+self.Flag_bob)
+        return hash(self.PC_alice + self.PC_bob) + hash(self.Flag_alice + self.Flag_bob)
 
     def __eq__(self, other):
-        return self.PC_alice == other.PC_alice and self.PC_bob == other.PC_bob and self.Flag_bob == other.Flag_bob and self.Flag_alice ==other.Flag_alice
+        return self.PC_alice == other.PC_alice and self.PC_bob == other.PC_bob and self.Flag_bob == other.Flag_bob and self.Flag_alice == other.Flag_alice
 
     def __repr__(self):
         return str(self.PC_alice) + str(self.PC_bob)
@@ -77,9 +77,9 @@ def exclusion_buchi():
 
 if __name__ == '__main__':
     semantic = BehSoupSemantics(AliceBob())
-    #print(tr.initial())
-    #print(tr.next(tr.initial()[0]))
+    # print(tr.initial())
+    # print(tr.next(tr.initial()[0]))
     r = predicate_model_checker(semantic, lambda c: c.PC_alice == 2 and c.PC_bob == 2)
     print(r)
-    r = predicate_model_checker(semantic, lambda c: len(semantic.actions(c)))
+    r = predicate_model_checker(semantic, lambda c: len(semantic.actions(c)) == 0)
     print(r)
