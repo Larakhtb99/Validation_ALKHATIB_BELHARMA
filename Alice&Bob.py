@@ -1,4 +1,4 @@
-from Algorithms import predicate_model_checker, iterative_bfs
+from Algorithms import predicate_model_checker, iterative_bfs, model_checker
 from Kernel import STRTR, IsAcceptingProxy, buchiSemantics, kripkeBuchiSTR
 from SoupLangage import BehaviorSoup, BehSoupSemantics
 
@@ -79,14 +79,15 @@ def exclusion_buchi():
 
 if __name__ == '__main__':
     semantic = BehSoupSemantics(AliceBob())
-
     # r = predicate_model_checker(semantic, lambda c: c.PC_alice == 2 and c.PC_bob == 2)
     # print(r)
     # r = predicate_model_checker(semantic, lambda c: len(semantic.actions(c)) == 0)
     # print(r)
     bs = buchiSemantics(exclusion_buchi())
     compSync = kripkeBuchiSTR(semantic,bs)
-    r= predicate_model_checker(compSync,lambda c:  bs.pred(c[1]))
+    r = predicate_model_checker(compSync,lambda c:  bs.pred(c[1]))
     print(r)
-    print("Hello")
+    r = model_checker(semantic, bs)
+    print(r)
+
 
