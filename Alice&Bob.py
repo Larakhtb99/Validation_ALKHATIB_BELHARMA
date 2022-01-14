@@ -1,5 +1,5 @@
 from Algorithms import predicate_model_checker, iterative_bfs
-from Kernel import STRTR, IsAcceptingProxy
+from Kernel import STRTR, IsAcceptingProxy, buchiSemantics, kripkeBuchiSTR
 from SoupLangage import BehaviorSoup, BehSoupSemantics
 
 
@@ -14,6 +14,8 @@ class AliceBobConfiguration:
         return hash(self.PC_alice + self.PC_bob) + hash(self.Flag_alice + self.Flag_bob)
 
     def __eq__(self, other):
+        if other is None:
+            return False
         return self.PC_alice == other.PC_alice and self.PC_bob == other.PC_bob and self.Flag_bob == other.Flag_bob and self.Flag_alice == other.Flag_alice
 
     def __repr__(self):
@@ -71,15 +73,20 @@ def b_in_cs(c):
 
 
 def exclusion_buchi():
-    delta = {0: [(lambda c: True, 0), lambda c: a_in_cs(c) and b_in_cs(c), 1], 1: [(lambda c: True, 1)]}
+    delta = {0: [(lambda c: True, 0), (lambda c: a_in_cs(c) or b_in_cs(c), 1)], 1: [(lambda c: True, 1)]}
     return 0, delta, lambda c: c == 1
 
 
 if __name__ == '__main__':
     semantic = BehSoupSemantics(AliceBob())
-    # print(tr.initial())
-    # print(tr.next(tr.initial()[0]))
-    r = predicate_model_checker(semantic, lambda c: c.PC_alice == 2 and c.PC_bob == 2)
+
+    # r = predicate_model_checker(semantic, lambda c: c.PC_alice == 2 and c.PC_bob == 2)
+    # print(r)
+    # r = predicate_model_checker(semantic, lambda c: len(semantic.actions(c)) == 0)
+    # print(r)
+    bs = buchiSemantics(exclusion_buchi())
+    compSync = kripkeBuchiSTR(semantic,bs)
+    r= predicate_model_checker(compSync,lambda c:  bs.pred(c[1]))
     print(r)
-    r = predicate_model_checker(semantic, lambda c: len(semantic.actions(c)) == 0)
-    print(r)
+    print("Hello")
+
