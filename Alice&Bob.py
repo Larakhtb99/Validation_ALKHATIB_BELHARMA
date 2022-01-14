@@ -73,7 +73,7 @@ def b_in_cs(c):
 
 
 def exclusion_buchi():
-    delta = {0: [(lambda c: True, 0), (lambda c: a_in_cs(c) or b_in_cs(c), 1)], 1: [(lambda c: True, 1)]}
+    delta = {0: [(lambda c: True, 0), (lambda c: a_in_cs(c) and b_in_cs(c), 1)], 1: [(lambda c: True, 1)]}
     return 0, delta, lambda c: c == 1
 
 
