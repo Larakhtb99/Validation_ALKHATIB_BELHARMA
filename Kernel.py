@@ -49,18 +49,20 @@ class OSTR:
         for a in actions(conf):
             target = self.operand.execute(conf, a)
             targets.append(target)
-        return targets,self.operand
+        return targets, self.operand
+
 
 class ISTR:
     def __init__(self, str):
         self.operand = str
 
-    def actions(self, i,conf):
-        actions=self.operand.actions(conf)
+    def actions(self, i, conf):
+        actions = self.operand.actions(conf)
         for a in actions:
             if a[0](i):
                 actions.append(a)
         return actions
+
     def execute(self, i, conf, actions):
         targets = []
         for a in actions(conf):
@@ -97,25 +99,26 @@ class kripkeBuchiSTR(SemanticTransitionRelations):
             self.get_synchronous_actions(k_target, Buchi_src, synchronous_actions)
         if num_actions == 0:
             self.get_synchronous_actions(Kripke_src, Buchi_src, synchronous_actions)
+        return synchronous_actions
 
-    def execute(self, action, conf):
+    def execute(self, conf, action):
         ktarget, baction = action
         _, bsrc = conf
-        return ktarget, self.rhs.execute(ktarget, baction, bsrc)
+        return ktarget, self.rhs.execute(ktarget, bsrc, baction)
 
 
 class buchiSemantics(ISTR):
-    def __init__(self, ini, d, pred):
-        self.initial = ini
-        self.delta = d
-        self.pred = pred
+    def __init__(self, t):
+        self.ini = t[0]
+        self.delta = t[1]
+        self.pred = t[2]
 
     def initial(self):
-        return self.initial()
+        return [self.ini]
 
     def actions(self, i, c):
-        actions = self.delta[c]
-        for a in actions:
+        actions = []
+        for a in self.delta[c]:
             if a[0](i):
                 actions.append(a)
         return actions
