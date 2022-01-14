@@ -48,12 +48,7 @@ def counterState():
 if __name__ == '__main__':
     semantic = BehSoupSemantics(counterState())
     tr = STRTR(semantic)
-    tr = IsAcceptingProxy(tr, lambda c: c.PC_alice == 0)
-    print(tr.initial())
-    print(tr.next(tr.initial()[0]))
-    r = predicate_model_checker(semantic, lambda c: c.PC_alice == 0)
-    print(r)
     r = predicate_model_checker(semantic, lambda c: c.PC_alice == 1 and c.PC_bob == 1)
     print(r)
-    r = predicate_model_checker(semantic, lambda c: len(semantic.actions(c)))
+    r = predicate_model_checker(semantic, lambda c: len(semantic.actions(c)) == 0)
     print(r)
