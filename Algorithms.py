@@ -88,12 +88,12 @@ def isAccepting_cycle(graph):
             node = queue.popleft()
             voisin = graph.next(node)
         for n in voisin:
-            if graph.isAccepting(n):
-                if find_cycle(graph, graph.next(n), n):
-                    return True
-            if n not in voisin:
-                visited.add(n)
+            if n not in visited:
+                if graph.isAccepting(n):
+                    if find_cycle(graph, graph.next(n), n):
+                        return True
                 queue.append(n)
+                visited.append(n)
     return False
 
 
